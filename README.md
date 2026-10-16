@@ -41,13 +41,13 @@ Không lưu khóa API hoặc token trong mã nguồn. Nếu thêm AI thật, hã
 
 ## Triển khai Cloudflare
 
-Website đã được triển khai bằng Cloudflare Workers Static Assets:
-https://webgon.beggy-fun-kingboylegend.workers.dev
+Website đã được triển khai bằng Cloudflare Pages:
+https://webgon.pages.dev
 
 Cấu hình ở `wrangler.jsonc`. Để cập nhật từ máy đã đăng nhập Cloudflare:
 
 ```sh
-npx wrangler deploy
+npx wrangler pages deploy dist --project-name webgon --branch main
 ```
 
-Lệnh này xuất bản tài nguyên trong `dist`. Không lưu token đăng nhập trong repository. Việc đẩy GitHub hiện chỉ tự deploy GitHub Pages; Cloudflare cần chạy lệnh trên hoặc cấu hình Workers Builds trong dashboard nếu muốn tự triển khai từ GitHub.
+Lệnh này xuất bản tài nguyên trong `dist`. Không lưu token đăng nhập trong repository. Việc đẩy GitHub hiện chỉ tự deploy GitHub Pages; Cloudflare cần chạy lệnh trên hoặc cấu hình quy trình CI trong dashboard nếu muốn tự triển khai từ GitHub.
