@@ -1,0 +1,17 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const nodes={package:{value:'basic'},pages:{value:'0'},copywriting:{checked:false},language:{checked:false},care:{checked:false}};
+const src=fs.readFileSync('dist/app.js','utf8');
+const first=src.slice(0,src.indexOf('function renderPlans'));
+const calc=src.slice(src.indexOf('function current'),src.indexOf('function update'));
+const ctx=vm.createContext({document:{querySelector:s=>nodes[s.slice(1)]},Intl,Number,Math});
+vm.runInContext(first+calc,ctx);
+const get=()=>vm.runInContext('estimate()',ctx);
+assert.equal(get().upfront,5900000);
+nodes.pages.value='3';nodes.copywriting.checked=true;nodes.language.checked=true;nodes.care.checked=true;
+assert.equal(get().upfront,10900000);assert.equal(get().recurring,490000);
+nodes.package.value='maintenance';assert.equal(get().upfront,0);assert.equal(get().recurring,490000);
+nodes.package.value='seo';assert.equal(get().upfront,null);assert.equal(get().recurring,490000);
+nodes.package.value='audit';assert.equal(get().upfront,1500000);
+nodes.package.value='landing';nodes.pages.value='99';assert.equal(get().upfront,16400000);assert.equal(nodes.pages.value,20);
+nodes.pages.value='-2';assert.equal(get().upfront,6400000);
+console.log('PASS: 7 pricing scenarios; separate one-time/monthly amounts; page limits.');
