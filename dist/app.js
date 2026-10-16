@@ -12,7 +12,7 @@ document.querySelectorAll('[data-category]').forEach((b,i,buttons)=>{b.addEventL
 ['package','pages','copywriting','language','care'].forEach(id=>$('#'+id).addEventListener('input',update));
 $('#theme').addEventListener('click',()=>{const t=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=t;try{localStorage.setItem('wg-theme',t)}catch{}$('#theme').setAttribute('aria-label',t==='dark'?'Chuyển sang giao diện sáng':'Chuyển sang giao diện tối')});
 $('#download-quote').addEventListener('click',()=>download(summary(),'webgon-uoc-tinh.txt'));
-function requestText(){const f=$('#request-form');if(!f.reportValidity())return null;const d=new FormData(f);return summary()+'\n\nTHÔNG TIN YÊU CẦU\nHọ tên: '+d.get('name').trim()+'\nEmail: '+d.get('email').trim()+'\nĐiện thoại: '+(d.get('phone').trim()||'Chưa cung cấp')+'\nNhu cầu: '+d.get('message').trim()+'\nTư vấn tích hợp AI: '+(d.get('aiInterest')?'Có — báo giá riêng':'Chưa chọn')}
+function requestText(){const f=$('#request-form');if(!f.reportValidity())return null;const d=new FormData(f);return summary()+'\n\nTHÔNG TIN YÊU CẦU\nHọ tên: '+d.get('name').trim()+'\nEmail: '+d.get('email').trim()+'\nĐiện thoại: '+(d.get('phone').trim()||'Chưa cung cấp')+'\nNhu cầu: '+d.get('message').trim()+'\nTư vấn tích hợp AI: '+(d.get('aiInterest')?'Có — báo giá riêng':'Chưa chọn')+'\nTư vấn đào tạo Agentic & Vibe Coding: '+(d.get('trainingInterest')?'Có — xác nhận lộ trình và học phí riêng':'Chưa chọn')}
 $('#request-form').addEventListener('submit',e=>{e.preventDefault();const text=requestText();if(text){download(text,'webgon-yeu-cau-bao-gia.txt');$('#form-status').textContent='Đã tạo tệp yêu cầu để bạn lưu và chia sẻ. Thông tin chưa được gửi đến WebGọn.'}});
 $('#copy-request').addEventListener('click',async()=>{const text=requestText();if(!text)return;try{await navigator.clipboard.writeText(text);$('#form-status').textContent='Đã sao chép yêu cầu. Bạn có thể dán vào kênh liên hệ của mình.'}catch{$('#form-status').textContent='Trình duyệt không cho sao chép. Hãy dùng nút Tạo & tải yêu cầu.'}});
 $('#year').textContent=new Date().getFullYear();renderPlans();update();
@@ -23,7 +23,7 @@ let revealObserver;
 function revealContent(){
   if(motionPreference.matches||!('IntersectionObserver' in window))return;
   if(!revealObserver)revealObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');revealObserver.unobserve(entry.target)}})},{threshold:.08});
-  document.querySelectorAll('.section-top,.plan,.included-head,.included-grid article,.process li,.faq>div,.contact-intro,#request-form,.ai-demo,.ai-options article').forEach((node,index)=>{if(node.classList.contains('reveal-ready'))return;node.style.setProperty('--reveal-delay',Math.min(index%3*75,150)+'ms');node.classList.add('reveal-ready');revealObserver.observe(node)});
+  document.querySelectorAll('.section-top,.plan,.included-head,.included-grid article,.process li,.faq>div,.contact-intro,#request-form,.ai-demo,.ai-options article,.training-intro,.training-modules article,.training-bottom').forEach((node,index)=>{if(node.classList.contains('reveal-ready'))return;node.style.setProperty('--reveal-delay',Math.min(index%3*75,150)+'ms');node.classList.add('reveal-ready');revealObserver.observe(node)});
 }
 revealContent();
 document.querySelectorAll('[data-category]').forEach(button=>button.addEventListener('click',revealContent));
@@ -31,3 +31,5 @@ motionPreference.addEventListener('change',()=>{if(motionPreference.matches){rev
 ['package','pages','copywriting','language','care'].forEach(id=>$('#'+id).addEventListener('input',()=>{if(motionPreference.matches)return;$('#total').classList.remove('total-pop');void $('#total').offsetWidth;$('#total').classList.add('total-pop')}));
 
 $('#ai-interest').addEventListener('click',()=>{$('#ai-interest-check').checked=true;});
+
+$('#training-interest').addEventListener('click',()=>{$('#training-interest-check').checked=true;});
